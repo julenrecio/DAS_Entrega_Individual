@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +15,24 @@
         android:theme="@style/Theme.EntregaIndividual"
         tools:targetApi="31">
         <activity
+            android:name=".ActivityAnadirPiloto"
+            android:launchMode="singleTask"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityRecordsCircuitos"
+            android:launchMode="singleTask"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityPuntos"
+            android:launchMode="singleTask"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityPilotos"
+            android:launchMode="singleTask"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

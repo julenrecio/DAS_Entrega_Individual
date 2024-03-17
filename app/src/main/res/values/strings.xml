@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">EntregaIndividual</string>
+    <string name="escuderia">Escudería</string>
+    <string name="puntos">Puntos</string>
+    <string name="titulo"><b>Formula 1   2023</b></string>
+    <string name="botonInstrucciones">Instrucciones de uso</string>
+    <string name="botonPuntos">Ver Mundial de Constructores</string>
+    <string name="botonPilotos">Ver Pilotos</string>
+    <string name="botonAnadirPiloto">Añadir piloto</string>
+    <string name="estadisticas">Circuitos y sus records</string>
+    <string name="nombrePiloto">Nombre del piloto: </string>
+    <string name="pasoPorCurva">Puntuación de su paso por curva: </string>
+    <string name="reaccion">Puntuación de su reacción: </string>
+    <string name="defensa">Puntuación de su defensa: </string>
+    <string name="precision">Puntuación de su precisión: </string>
+    <string name="valoracion">Valoración general: </string>
+    <string name="introducirDatos">Introduce los datos del piloto: </string>
+    <string name="editTextNombre">Max Verstappen</string>
+    <string name="editTextPuntuacion">0-100</string>
+    <string name="guardar">Guardar</string>
 </resources>

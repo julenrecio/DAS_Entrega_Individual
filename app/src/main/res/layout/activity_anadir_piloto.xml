@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityAnadirPiloto"
+    android:background="@drawable/coche"
+    android:theme="@style/estilo1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/introducirDatos"
+        android:text="@string/introducirDatos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nombre" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nombre"
+        android:text="@string/nombrePiloto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nombreEditText"
+        app:layout_constraintTop_toBottomOf="@+id/introducirDatos"
+        app:layout_constraintBottom_toTopOf="@+id/ppc" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:hint="@string/editTextNombre"
+        android:id="@+id/nombreEditText"
+        app:layout_constraintStart_toEndOf="@+id/nombre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/introducirDatos"
+        app:layout_constraintBottom_toTopOf="@+id/ppcEditText" />
+
+    <TextView
+        android:id="@+id/ppc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pasoPorCurva"
+        app:layout_constraintBottom_toTopOf="@+id/reaccion"
+        app:layout_constraintEnd_toStartOf="@+id/ppcEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nombre" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:hint="@string/editTextPuntuacion"
+        android:id="@+id/ppcEditText"
+        app:layout_constraintStart_toEndOf="@+id/ppc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nombreEditText"
+        app:layout_constraintBottom_toTopOf="@+id/reaccionEditText" />
+
+    <TextView
+        android:id="@+id/reaccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reaccion"
+        app:layout_constraintBottom_toTopOf="@+id/defensa"
+        app:layout_constraintEnd_toStartOf="@+id/reaccionEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ppc" />
+
+    <EditText
+        android:id="@+id/reaccionEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/editTextPuntuacion"
+        android:inputType="number"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/defensaEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/reaccion"
+        app:layout_constraintTop_toBottomOf="@+id/ppcEditText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/defensa"
+        android:text="@string/defensa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/defensaEditText"
+        app:layout_constraintTop_toBottomOf="@+id/reaccion"
+        app:layout_constraintBottom_toTopOf="@+id/precision" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:hint="@string/editTextPuntuacion"
+        android:id="@+id/defensaEditText"
+        app:layout_constraintStart_toEndOf="@+id/defensa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reaccionEditText"
+        app:layout_constraintBottom_toTopOf="@+id/precisionEditText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/precision"
+        android:text="@string/precision"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/precisionEditText"
+        app:layout_constraintTop_toBottomOf="@+id/defensa"
+        app:layout_constraintBottom_toTopOf="@+id/valoracion" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:hint="@string/editTextPuntuacion"
+        android:id="@+id/precisionEditText"
+        app:layout_constraintStart_toEndOf="@+id/precision"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/defensaEditText"
+        app:layout_constraintBottom_toTopOf="@+id/valoracionEditText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/valoracion"
+        android:text="@string/valoracion"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/valoracionEditText"
+        app:layout_constraintTop_toBottomOf="@+id/precision"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:hint="@string/editTextPuntuacion"
+        android:id="@+id/valoracionEditText"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintStart_toEndOf="@+id/valoracion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/precisionEditText"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar"
+        android:onClick="onClickBotonGuardar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/valoracionEditText"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
