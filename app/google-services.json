@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "594211589221",
+    "project_id": "entregaindividual-4b4f1",
+    "storage_bucket": "entregaindividual-4b4f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594211589221:android:7e1c5ca4e30a4c55144a8c",
+        "android_client_info": {
+          "package_name": "com.example.entregaindividual"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjoeNiHnOMJwgzQvrzuWvAGr45-J_cp7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
