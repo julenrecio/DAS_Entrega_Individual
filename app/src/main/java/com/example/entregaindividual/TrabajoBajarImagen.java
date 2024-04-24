@@ -28,10 +28,14 @@ public class TrabajoBajarImagen extends Worker {
     @Override
     public Result doWork() {
 
+        //Peticion HTTP
+        //Se recibe como dato de entrada del trabajo el nombre de la imagen
+
         String nombreImagen = getInputData().getString("nombre");
         String direccion = "http://34.88.51.200:81/fotos/" + nombreImagen;
         HttpURLConnection urlConnection = null;
         try {
+            //Se abre la conexión
             URL destino = new URL(direccion);
             urlConnection = (HttpURLConnection) destino.openConnection();
             urlConnection.setConnectTimeout(5000);
@@ -45,6 +49,7 @@ public class TrabajoBajarImagen extends Worker {
 
         int statusCode;
         try {
+            // Se obtiene el codigo de respuesta de la petición
             statusCode = urlConnection.getResponseCode();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -55,13 +60,14 @@ public class TrabajoBajarImagen extends Worker {
             BufferedInputStream inputStream = null;
             try {
                 elBitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
-                Log.i("bitmap", "asignacion");
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
+        // Se transforma el bitmap en String, se comprime a poca calidad porque
+        // si no, no deja introducir el dato en un Objeto Data
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         elBitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream);
         byte[] fototransformada = stream.toByteArray();

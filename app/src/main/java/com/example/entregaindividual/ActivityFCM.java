@@ -23,9 +23,12 @@ public class ActivityFCM extends AppCompatActivity {
     }
     public void onClickBotonMandarMensaje(View view) {
 
+        // Se crea el trabajo definido en la clase TrabajoFCM
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(TrabajoFCM.class)
                 .build();
 
+        // Se añade un observer para detectar cuando haya finalizado el trabajo
+        // y recoger el resultado.
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override

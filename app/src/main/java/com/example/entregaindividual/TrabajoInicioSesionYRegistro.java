@@ -26,15 +26,21 @@ public class TrabajoInicioSesionYRegistro extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+
+        // Se indica la direccion del servidor
         String direccion = "http://34.88.51.200:81";
+        // Se recogen los datos de entrada introducidos por el usuario en la MainActivity
         String usuario = getInputData().getString("usuario");
         String contraseña = getInputData().getString("contraseña");
         String accion = getInputData().getString("accion");
+        // Se indica la funcion a usar en el index.php
         String funcion = "inicioSesionYRegistro";
+        // Se crea el String que define los parametros de la petición
         String parametros = "username=" + usuario + "&password=" + contraseña + "&accion=" + accion + "&funcion=" + funcion;
 
         HttpURLConnection urlConnection = null;
         try {
+            // Se establece la conexión
             URL destino = new URL(direccion);
             urlConnection = (HttpURLConnection) destino.openConnection();
             urlConnection.setConnectTimeout(5000);
@@ -47,15 +53,19 @@ public class TrabajoInicioSesionYRegistro extends Worker {
         }
 
         try {
+            // Se especifica el metodo de la petición
             urlConnection.setRequestMethod("POST");
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
         }
+        // Se configura la conexión para que pueda enviar datos
         urlConnection.setDoOutput(true);
+        // Se inidica la forma de enviar los datos
         urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         int statusCode;
         try {
+            // Se añaden los parametros a la petición
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -66,6 +76,7 @@ public class TrabajoInicioSesionYRegistro extends Worker {
 
         String result = null;
         if (statusCode == 200) {
+            // Si la respuesta es correcta, se procede a recoger el resultado en una variable
             BufferedInputStream inputStream = null;
             try {
                 inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -94,7 +105,6 @@ public class TrabajoInicioSesionYRegistro extends Worker {
                 throw new RuntimeException(e);
             }
         }
-
         Data resultado = new Data.Builder()
                 .putString("resultado", result)
                 .build();

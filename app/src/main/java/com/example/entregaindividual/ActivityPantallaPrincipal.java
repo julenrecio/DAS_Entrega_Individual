@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 public class ActivityPantallaPrincipal extends AppCompatActivity {
 
+    // Se lanzan las distintas actividades dependiendo del boton que se pulse
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

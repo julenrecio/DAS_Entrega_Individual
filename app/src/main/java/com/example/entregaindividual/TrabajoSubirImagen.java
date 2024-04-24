@@ -29,12 +29,19 @@ public class TrabajoSubirImagen extends Worker {
     @Override
     public Result doWork() {
 
+        // Se hace una peticion HTTP para subir la imagen capturada con la camara
+        // al servidor
+
+
+        // Se obtiene un array de bytes como dato de entrada del trabajo y se
+        // se convierte en String
         String direccion = "http://34.88.51.200:81";
         byte[] byteArray = getInputData().getByteArray("foto");
         String fotoEn64 = Base64.encodeToString(byteArray,Base64.DEFAULT);
         String parametros = "funcion=imagenes&foto=" + fotoEn64;
         HttpURLConnection urlConnection = null;
         try {
+            // Se establece la conexión con la direccion y los parametros especificados
             URL destino = new URL(direccion);
             urlConnection = (HttpURLConnection) destino.openConnection();
             urlConnection.setConnectTimeout(5000);
@@ -47,15 +54,19 @@ public class TrabajoSubirImagen extends Worker {
         }
 
         try {
+            // Se especifica el metodo de la petición
             urlConnection.setRequestMethod("POST");
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
         }
+        // Se configura la conexión para que pueda enviar datos
         urlConnection.setDoOutput(true);
+        // Se inidica la forma de enviar los datos
         urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         int statusCode;
         try {
+            // Se añaden los parametros a la petición
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -66,6 +77,8 @@ public class TrabajoSubirImagen extends Worker {
 
         String result = null;
         if (statusCode == 200) {
+
+            // Si la respuesta es correcta, se procede a recoger el resultado en una variable
             BufferedInputStream inputStream = null;
             try {
                 inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -95,6 +108,7 @@ public class TrabajoSubirImagen extends Worker {
             }
         }
 
+        // Se crea un objeto Data para devolver el resultado
         Data resultado = new Data.Builder()
                 .putString("resultado", result)
                 .build();

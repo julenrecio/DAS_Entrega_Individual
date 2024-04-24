@@ -18,7 +18,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.Manifest;
 import android.widget.ImageView;
@@ -27,6 +26,10 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 
 public class ActivityImagenes extends AppCompatActivity {
+
+    // Se hace uso de un ActivityResultLauncher para captar una imagen de la camara
+    // Se convierte la imagen a un array de bytes y se manda al trabajo que
+    // se encarga de subir la imagen al servidor
 
     private String nombreImagen;
     private ActivityResultLauncher<Intent> takePictureLauncher =
@@ -48,7 +51,9 @@ public class ActivityImagenes extends AppCompatActivity {
                     OneTimeWorkRequest otwr1 = new OneTimeWorkRequest.Builder(TrabajoSubirImagen.class)
                             .setInputData(datos1)
                             .build();
-
+                    // Se añade un observer para que detecte cuando se termina el trabajo para poder
+                    // recoger el resultado y poner en la etiqueta el nombre de la imagen generado
+                    // en el index.php
                     WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr1.getId())
                             .observe(this, new Observer<WorkInfo>() {
                                 @Override
@@ -60,17 +65,20 @@ public class ActivityImagenes extends AppCompatActivity {
                                     }
                                 }
                             });
-
+                    // Se encola el primer trabajo
                     WorkManager.getInstance(this).enqueue(otwr1);
 
+                    // Se define el objeto Data de entrada para el segundo trabajo
                     Data datos2 = new Data.Builder()
                             .putString("nombre", nombreImagen)
                             .build();
-
+                    // Se define el segundo trabajo y se especifican sus datos de entrada
                     OneTimeWorkRequest otwr2 = new OneTimeWorkRequest.Builder(TrabajoBajarImagen.class)
                             .setInputData(datos2)
                             .build();
 
+                    // Se recoge el resultado del trabajo extrayendolo del outputData
+                    // Se transforma el dato en bitmap y se añade al imageView
                     WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr2.getId())
                             .observe(this, new Observer<WorkInfo>() {
                                 @Override
@@ -98,12 +106,16 @@ public class ActivityImagenes extends AppCompatActivity {
     }
 
     public void onClickBotonSacarFoto(View view) {
+
+        // Si no los tiene, se piden los permisos para usar la camara
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA},
                     200);
         }
+
+        // Se lanza el ActivityResult
         Intent elIntentFoto= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takePictureLauncher.launch(elIntentFoto);
     }

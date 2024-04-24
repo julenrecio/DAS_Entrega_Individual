@@ -22,6 +22,10 @@ public class ServicioFirebase extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+        // Si el mensaje contiene datos se abre manda una notificacion, que al
+        // pulsarla abre una actividad que muestra el mensaje enviado a traves
+        // de Firebase
+
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> data = remoteMessage.getData();
 
@@ -30,6 +34,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
             intent.putExtra("mensaje", data.get("mensaje"));
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
+            // Se crea la notificacion y el canal
             NotificationManager elManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel elCanal = new NotificationChannel("IdCanal", "Canal1",
@@ -44,6 +49,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent);
 
+            // Se manda la notificación
             elManager.notify(0, notificationBuilder.build());
         }
 

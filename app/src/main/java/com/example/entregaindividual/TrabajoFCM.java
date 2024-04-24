@@ -26,6 +26,9 @@ import java.util.concurrent.Semaphore;
 public class TrabajoFCM extends Worker {
 
     private String token;
+
+    // Semaforo para resolver el conflicto de asignación del token antes de
+    // la obtención del mismo
     private final Semaphore semaphore = new Semaphore(0);
 
     public TrabajoFCM(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -42,6 +45,7 @@ public class TrabajoFCM extends Worker {
                 if (!task.isSuccessful()) {
                     return;
                 }
+                // Se recoge el token actual
                 token = task.getResult();
                 semaphore.release();
             }
@@ -55,10 +59,12 @@ public class TrabajoFCM extends Worker {
             throw new RuntimeException(e);
         }
 
+        // Se hace una peticion HTTP especificando la funcion y el token como parametros
         String direccion = "http://34.88.51.200:81";
         String parametros = "funcion=fcm&token=" + token;
         HttpURLConnection urlConnection = null;
         try {
+            // Se establece la conexión
             URL destino = new URL(direccion);
             urlConnection = (HttpURLConnection) destino.openConnection();
             urlConnection.setConnectTimeout(5000);
@@ -75,11 +81,14 @@ public class TrabajoFCM extends Worker {
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
         }
+        // Se configura la conexión para que pueda enviar datos
         urlConnection.setDoOutput(true);
+        // Se inidica la forma de enviar los datos
         urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         int statusCode;
         try {
+            // Se añaden los parametros a la petición
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -90,6 +99,7 @@ public class TrabajoFCM extends Worker {
 
         String result = null;
         if (statusCode == 200) {
+            // Si la respuesta es correcta, se procede a recoger el resultado en una variable
             BufferedInputStream inputStream = null;
             try {
                 inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -118,7 +128,7 @@ public class TrabajoFCM extends Worker {
                 throw new RuntimeException(e);
             }
         }
-
+        // Se crea un objeto Data para devolver el resultado
         Data resultado = new Data.Builder()
                 .putString("resultado", result)
                 .build();
