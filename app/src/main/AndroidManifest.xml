@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-feature
         android:name="android.hardware.camera2.full"
@@ -25,8 +24,11 @@
         android:roundIcon="@drawable/fondo_pantalla"
         android:supportsRtl="true"
         android:theme="@style/Theme.EntregaIndividual"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ActivityPilotosInfoExtra"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".ActivityImagenes"
             android:exported="false" />
@@ -45,7 +47,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityPantallaPrincipal"
+            android:name=".ActivityLoginRegister"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ActivityConfiguracion"
             android:exported="false"
             android:launchMode="singleTask" />
         <activity
@@ -57,15 +63,10 @@
             android:exported="false"
             android:launchMode="singleTask" />
         <activity
-            android:name=".ActivityPuntos"
-            android:exported="false"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".ActivityPilotos"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ActivityMain"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>

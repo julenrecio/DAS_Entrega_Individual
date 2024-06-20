@@ -6,33 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".ActivityImagenes">
 
+    <EditText
+        android:id="@+id/tituloFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/editTextTituloFoto"
+        android:inputType="text"
+        android:minWidth="120dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/botonSacarFoto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/botonSacarFoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickBotonSacarFoto"
-        android:text="Sacar foto"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/sacarFoto"
+        app:layout_constraintBottom_toTopOf="@+id/resultadoImagen"
+        app:layout_constraintEnd_toStartOf="@+id/botonVerFoto"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tituloFoto" />
+
+    <Button
+        android:id="@+id/botonVerFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickBotonVerFoto"
+        android:text="@string/verFoto"
+        app:layout_constraintBottom_toTopOf="@+id/resultadoImagen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/botonSacarFoto"
+        app:layout_constraintTop_toBottomOf="@+id/tituloFoto" />
+
+    <TextView
+        android:id="@+id/resultadoImagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/botonSacarFoto"
+        app:layout_constraintBottom_toTopOf="@id/imageView" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="350dp"
         android:layout_height="350dp"
-        app:layout_constraintBottom_toTopOf="@+id/resultadoImagen"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonSacarFoto" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/resultadoImagen"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/resultadoImagen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

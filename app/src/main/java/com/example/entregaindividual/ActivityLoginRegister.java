@@ -10,26 +10,26 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Objects;
+
+public class ActivityLoginRegister extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login_register);
     }
 
     public void onClickBotonIniciarSesion (View view) {
 
         // Se recoge el usuario y contraseña de los campos de texto
         EditText editTextUsuario = findViewById(R.id.usuarioEditText);
-        EditText editTextContraseña = findViewById(R.id.contraseñaEditText);
+        EditText editTextContrasena = findViewById(R.id.contrasenaEditText);
         String usuario = editTextUsuario.getText().toString();
-        String contraseña = editTextContraseña.getText().toString();
+        String contrasena = editTextContrasena.getText().toString();
 
         // Se indica la funcion a ejecutar en el index.php
         String accion = "iniciosesion";
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         // Se crea el conjunto de datos de entrada para el trabajo
         Data datos = new Data.Builder()
                 .putString("usuario", usuario)
-                .putString("contraseña", contraseña)
+                .putString("contraseña", contrasena)
                 .putString("accion", accion)
                 .build();
 
@@ -48,29 +48,23 @@ public class MainActivity extends AppCompatActivity {
 
         // Se añade un observer para detectar cuando acaba el trabajo y gestionar el resultado
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
-                .observe(this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        if(workInfo != null && workInfo.getState().isFinished()){
-                            TextView textViewResult = findViewById(R.id.textoResultado);
-                            textViewResult.setText(workInfo.getOutputData().getString("resultado"));
+                .observe(this, workInfo -> {
+                    if(workInfo != null && workInfo.getState().isFinished()){
+                        TextView textViewResult = findViewById(R.id.textoResultado);
+                        textViewResult.setText(workInfo.getOutputData().getString("resultado"));
 
-                            // Se añade un retardo de tres segundos para que se pueda ver que el inicio
-                            // de sesion y ha sido correcto y se lanza el intent de la actividad principal
-                            if (workInfo.getOutputData().getString("resultado").equals("Inicio de sesion correcto, bienvenido " + usuario)){
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Intent i = new Intent(getBaseContext(), ActivityPantallaPrincipal.class);
-                                        i.putExtra("usuario", usuario);
-                                        i.putExtra("contraseña", contraseña);
-                                        startActivity(i);
-                                    }
-                                }, 3000);
-                            }
-
+                        // Se añade un retardo de tres segundos para que se pueda ver que el inicio
+                        // de sesion y ha sido correcto y se lanza el intent de la actividad principal
+                        if (Objects.equals(workInfo.getOutputData().getString("resultado"), "Inicio de sesion correcto, bienvenido " + usuario)){
+                            Handler handler = new Handler();
+                            handler.postDelayed(() -> {
+                                Intent i = new Intent(getBaseContext(), ActivityMain.class);
+                                i.putExtra("usuario", usuario);
+                                i.putExtra("contraseña", contrasena);
+                                startActivity(i);
+                            }, 1000);
                         }
+
                     }
                 });
         // Se encola el trabajo de inicio de sesion
@@ -81,14 +75,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Se recogen los datos de los campos de texto
         EditText editTextUsuario = findViewById(R.id.usuarioEditText);
-        EditText editTextContraseña = findViewById(R.id.contraseñaEditText);
+        EditText editTextContrasena = findViewById(R.id.contrasenaEditText);
         String usuario = editTextUsuario.getText().toString();
-        String contraseña = editTextContraseña.getText().toString();
+        String contrasena = editTextContrasena.getText().toString();
         String accion = "registro";
 
         Data datos = new Data.Builder()
                 .putString("usuario", usuario)
-                .putString("contraseña", contraseña)
+                .putString("contraseña", contrasena)
                 .putString("accion", accion)
                 .build();
 
@@ -99,13 +93,10 @@ public class MainActivity extends AppCompatActivity {
         // Se muestra en un texto el mensaje imprimido por el index.php al realizar
         // la peticion HTTP en el trabajo
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
-                .observe(this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        if(workInfo != null && workInfo.getState().isFinished()){
-                            TextView textViewResult = findViewById(R.id.textoResultado);
-                            textViewResult.setText(workInfo.getOutputData().getString("resultado"));
-                        }
+                .observe(this, workInfo -> {
+                    if(workInfo != null && workInfo.getState().isFinished()){
+                        TextView textViewResult = findViewById(R.id.textoResultado);
+                        textViewResult.setText(workInfo.getOutputData().getString("resultado"));
                     }
                 });
 

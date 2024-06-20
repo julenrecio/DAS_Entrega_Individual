@@ -7,8 +7,6 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.BufferedInputStream;
@@ -16,14 +14,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Semaphore;
 
-public class TrabajoFCM extends Worker {
+public class TrabajoFCMGuardarToken extends Worker {
 
     private String token;
 
@@ -31,7 +28,7 @@ public class TrabajoFCM extends Worker {
     // la obtención del mismo
     private final Semaphore semaphore = new Semaphore(0);
 
-    public TrabajoFCM(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public TrabajoFCMGuardarToken(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
@@ -39,30 +36,32 @@ public class TrabajoFCM extends Worker {
     @Override
     public Result doWork() {
 
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
+        String newToken = getInputData().getString("token");
+        if (newToken == null) {
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     return;
                 }
                 // Se recoge el token actual
                 token = task.getResult();
                 semaphore.release();
+            });
+
+
+            try {
+                semaphore.acquire();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
             }
-        });
-
-
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
+        } else {
+            token = newToken;
         }
 
         // Se hace una peticion HTTP especificando la funcion y el token como parametros
         String direccion = "http://34.88.51.200:81";
-        String parametros = "funcion=fcm&token=" + token;
-        HttpURLConnection urlConnection = null;
+        String parametros = "funcion=fcmGuardarToken&token=" + token;
+        HttpURLConnection urlConnection;
         try {
             // Se establece la conexión
             URL destino = new URL(direccion);
@@ -70,8 +69,6 @@ public class TrabajoFCM extends Worker {
             urlConnection.setConnectTimeout(5000);
             urlConnection.setReadTimeout(5000);
 
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -97,30 +94,26 @@ public class TrabajoFCM extends Worker {
             throw new RuntimeException(e);
         }
 
-        String result = null;
+        StringBuilder result = null;
         if (statusCode == 200) {
             // Si la respuesta es correcta, se procede a recoger el resultado en una variable
-            BufferedInputStream inputStream = null;
+            BufferedInputStream inputStream;
             try {
                 inputStream = new BufferedInputStream(urlConnection.getInputStream());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            BufferedReader bufferedReader = null;
-            try {
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+            BufferedReader bufferedReader;
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String line;
-            result = "";
+            result = new StringBuilder();
             while (true) {
                 try {
-                    if (!((line = bufferedReader.readLine()) != null)) break;
+                    if ((line = bufferedReader.readLine()) == null) break;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                result += line;
+                result.append(line);
             }
             try {
                 inputStream.close();
@@ -129,8 +122,9 @@ public class TrabajoFCM extends Worker {
             }
         }
         // Se crea un objeto Data para devolver el resultado
+        assert result != null;
         Data resultado = new Data.Builder()
-                .putString("resultado", result)
+                .putString("resultado", result.toString())
                 .build();
         return Result.success(resultado);
     }

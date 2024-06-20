@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Formula 1</string>
+    <string name="botonInstrucciones">Instructions for use</string>
+    <string name="botonPilotos">Pilots</string>
+    <string name="botonAnadirPiloto">Add a pilot</string>
+    <string name="estadisticas">Circuits and their records</string>
+    <string name="nombrePiloto">Name of the pilot: </string>
+    <string name="pasoPorCurva">Corner passing score: </string>
+    <string name="reaccion">Reaction time score: </string>
+    <string name="defensa">Defense score: </string>
+    <string name="precision">Precision score: </string>
+    <string name="valoracion">Overall rating: </string>
+    <string name="introducirDatos">Introduce the pilot\'s data: </string>
+    <string name="editTextNombre">Max Verstappen</string>
+    <string name="editTextPuntuacion">0-100</string>
+    <string name="guardar">Save</string>
+    <string name="titulo">Formula 1 2023</string>
+    <string name="es">Spanish</string>
+    <string name="en">English</string>
+    <string name="idioma">Language</string>
+    <string name="cuenta">Account</string>
+    <string name="eliminarCuenta">Delete account</string>
+    <string name="cerrarSesion">Logout</string>
+    <string name="volver">Go back</string>
+    <string name="configuracion">Settings</string>
+    <string name="fcm">FCM messages</string>
+    <string name="imagenes">Images</string>
+    <string name="editTextTituloFoto">Title of the picture</string>
+    <string name="sacarFoto">Take picture</string>
+    <string name="verFoto">See picture</string>
+    <string name="editTextMensaje">Message for the app\'s users</string>
+    <string name="mensaje">Send message</string>
+
+</resources>

@@ -5,9 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -19,7 +22,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
 
     }
 
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         // Si el mensaje contiene datos se abre manda una notificacion, que al
@@ -36,11 +39,9 @@ public class ServicioFirebase extends FirebaseMessagingService {
 
             // Se crea la notificacion y el canal
             NotificationManager elManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel elCanal = new NotificationChannel("IdCanal", "Canal1",
-                        NotificationManager.IMPORTANCE_DEFAULT);
-                elManager.createNotificationChannel(elCanal);
-            }
+            NotificationChannel elCanal = new NotificationChannel("IdCanal", "Canal1",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            elManager.createNotificationChannel(elCanal);
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "IdCanal")
                     .setSmallIcon(android.R.drawable.ic_notification_clear_all)
@@ -52,6 +53,17 @@ public class ServicioFirebase extends FirebaseMessagingService {
             // Se manda la notificación
             elManager.notify(0, notificationBuilder.build());
         }
+    }
 
+    @Override
+    public void onNewToken(@NonNull String token) {
+        super.onNewToken(token);
+        Data dataToken = new Data.Builder()
+                .putString("token", token)
+                .build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(TrabajoFCMGuardarToken.class)
+                .setInputData(dataToken)
+                .build();
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 }

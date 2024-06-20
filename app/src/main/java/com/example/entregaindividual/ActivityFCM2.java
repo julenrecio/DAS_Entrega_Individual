@@ -17,6 +17,7 @@ public class ActivityFCM2 extends AppCompatActivity {
 
         TextView textViewMensaje = findViewById(R.id.mensaje);
 
+        // Si hay algun dato recogerlo del intent y ponerlo en el TextView
         if (getIntent().getExtras() != null) {
             String mensaje = getIntent().getExtras().getString("mensaje");
             textViewMensaje.setText(mensaje);

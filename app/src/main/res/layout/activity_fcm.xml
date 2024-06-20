@@ -6,16 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".ActivityFCM">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:hint="@string/editTextMensaje"
+        android:id="@+id/mensajeEditText"
+        app:layout_constraintBottom_toTopOf="@+id/botonMandarMensaje"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/botonMandarMensaje"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickBotonMandarMensaje"
-        android:text="Mandar mensaje"
+        android:text="@string/mensaje"
         app:layout_constraintBottom_toTopOf="@+id/resultado"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/mensajeEditText" />
 
     <TextView
         android:layout_width="wrap_content"

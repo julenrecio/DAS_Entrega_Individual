@@ -4,65 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ActivityLoginRegister"
+    android:background="@drawable/fondo_pantalla">
 
-    <EditText
-        android:id="@+id/usuarioEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="usuario"
-        android:inputType="text"
-        android:minWidth="120dp"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/contraseñaEditText"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        app:titleTextColor="@color/black"
+        app:subtitleTextColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/contraseñaEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="contraseña"
-        android:inputType="text"
-        android:minWidth="120dp"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/botonIniciarSesion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usuarioEditText" />
-
-    <Button
-        android:id="@+id/botonIniciarSesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClickBotonIniciarSesion"
-        android:text="Iniciar Sesión"
-        app:layout_constraintBottom_toTopOf="@+id/botonRegistrarse"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contraseñaEditText" />
-
-    <Button
-        android:id="@+id/botonRegistrarse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClickBotonRegistrarse"
-        android:text="Registrarse"
-        app:layout_constraintBottom_toTopOf="@+id/textoResultado"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonIniciarSesion" />
-
     <TextView
+        android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textoResultado"
+        android:layout_marginTop="50dp"
+        android:text="@string/titulo"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/instrucciones"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/instrucciones"
+        android:text="@string/botonInstrucciones"
+        android:onClick="onClickBotonInstrucciones"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonRegistrarse"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/titulo"
+        app:layout_constraintBottom_toTopOf="@+id/pilotos"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pilotos"
+        android:text="@string/botonPilotos"
+        android:onClick="onClickBotonPilotos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instrucciones"
+        app:layout_constraintBottom_toTopOf="@+id/estadisticas"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/estadisticas"
+        android:text="@string/estadisticas"
+        android:onClick="onClickBotonEstadisticas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pilotos"
+        app:layout_constraintBottom_toTopOf="@+id/fcm"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fcm"
+        android:text="@string/fcm"
+        android:onClick="onClickBotonFCM"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estadisticas"
+        app:layout_constraintBottom_toTopOf="@+id/imagenes"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imagenes"
+        android:text="@string/imagenes"
+        android:onClick="onClickBotonImagenes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fcm"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

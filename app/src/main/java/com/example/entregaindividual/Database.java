@@ -12,6 +12,8 @@ public class Database extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    // En el método onCreate se ejecutan las consultas necesarias para crear las tablas
+    // de la base de datos e insertar los datos manualmente
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE Circuitos ('Codigo' INTEGER PRIMARY KEY " +

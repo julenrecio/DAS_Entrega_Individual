@@ -17,9 +17,9 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class TrabajoSubirImagen extends Worker {
+public class TrabajoFCMEnviarMensaje extends Worker {
 
-    public TrabajoSubirImagen(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public TrabajoFCMEnviarMensaje(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
@@ -27,19 +27,14 @@ public class TrabajoSubirImagen extends Worker {
     @Override
     public Result doWork() {
 
-        // Se hace una peticion HTTP para subir la imagen capturada con la camara
-        // al servidor
+        String mensaje = getInputData().getString("mensaje");
 
-
-        // Se obtiene un array de bytes como dato de entrada del trabajo y se
-        // convierte en String
+        // Se hace una peticion HTTP especificando la funcion y el token como parametros
         String direccion = "http://34.88.51.200:81";
-        String fotoEn64 = getInputData().getString("foto");
-        String tituloFoto = getInputData().getString("titulo");
-        String parametros = "funcion=insertarImagenBD&foto=" + fotoEn64 + "&titulo=" + tituloFoto;
+        String parametros = "funcion=fcmEnviarMensaje&mensaje=" + mensaje;
         HttpURLConnection urlConnection;
         try {
-            // Se establece la conexión con la direccion y los parametros especificados
+            // Se establece la conexión
             URL destino = new URL(direccion);
             urlConnection = (HttpURLConnection) destino.openConnection();
             urlConnection.setConnectTimeout(5000);
@@ -50,7 +45,6 @@ public class TrabajoSubirImagen extends Worker {
         }
 
         try {
-            // Se especifica el metodo de la petición
             urlConnection.setRequestMethod("POST");
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
@@ -98,7 +92,6 @@ public class TrabajoSubirImagen extends Worker {
                 throw new RuntimeException(e);
             }
         }
-
         // Se crea un objeto Data para devolver el resultado
         assert result != null;
         Data resultado = new Data.Builder()

@@ -20,28 +20,39 @@ public class ActivityRecordsCircuitos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_records_circuitos);
 
-        Database gestorBD = new Database(this,"Formula 1", null, 1);
+        // Se crae el gestor de la BD
+
+        Database gestorBD = new Database(this, "Formula 1", null, 1);
         SQLiteDatabase bd = gestorBD.getWritableDatabase();
+
 
         // TableView del repositorio:
         // com.github.ISchwarz23:SortableTableView:2.8.1
 
-        TableView tableView = (TableView) findViewById(R.id.tablaDatos);
+        // Se crea el TableView
+        TableView tableView;
+        tableView = (TableView) findViewById(R.id.tablaDatos);
         String[] cabeceras = {"Piloto", "Circuito"};
 
+        // Se crea una matriz de String
         String[][] datos = new String[10][2];
         String nombrePiloto;
         String nombreCircuito;
-        Cursor c = bd.rawQuery("SELECT NombreApellidos, Nombre FROM Pilotos inner join Circuitos on Circuitos.CodigoPiloto = Pilotos.Codigo", null);
+
+        // Se hace la consulta
+        Cursor cursor = bd.rawQuery("SELECT NombreApellidos, Nombre FROM Pilotos inner join Circuitos on Circuitos.CodigoPiloto = Pilotos.Codigo", null);
         int i = 0;
-        while (c.moveToNext()){
-            nombrePiloto = c.getString(0);
-            nombreCircuito = c.getString(1);
+
+        // Se recorre el resultado y se va almacenando cada dato en una posición de la matriz
+        while (cursor.moveToNext()){
+            nombrePiloto = cursor.getString(0);
+            nombreCircuito = cursor.getString(1);
             datos[i][0] = nombrePiloto;
             datos[i][1] = nombreCircuito;
             i++;
         }
 
+        // Se configura el TableView
         TableColumnWeightModel columnModel = new TableColumnWeightModel(2);
         columnModel.setColumnWeight(0, 35);
         columnModel.setColumnWeight(1, 50);
@@ -51,6 +62,7 @@ public class ActivityRecordsCircuitos extends AppCompatActivity {
 
     }
 
+    // Si se hace clic en añadir piloto se lanza la actividad correspondiente
     public void onClickBotonAnadirPiloto (View view) {
         Intent i = new Intent(this, ActivityAnadirPiloto.class);
         startActivity(i);

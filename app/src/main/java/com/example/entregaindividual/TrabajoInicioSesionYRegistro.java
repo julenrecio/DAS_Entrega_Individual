@@ -11,11 +11,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class TrabajoInicioSesionYRegistro extends Worker {
 
@@ -31,14 +30,14 @@ public class TrabajoInicioSesionYRegistro extends Worker {
         String direccion = "http://34.88.51.200:81";
         // Se recogen los datos de entrada introducidos por el usuario en la MainActivity
         String usuario = getInputData().getString("usuario");
-        String contraseña = getInputData().getString("contraseña");
+        String contrasena = getInputData().getString("contraseña");
         String accion = getInputData().getString("accion");
         // Se indica la funcion a usar en el index.php
         String funcion = "inicioSesionYRegistro";
         // Se crea el String que define los parametros de la petición
-        String parametros = "username=" + usuario + "&password=" + contraseña + "&accion=" + accion + "&funcion=" + funcion;
+        String parametros = "username=" + usuario + "&password=" + contrasena + "&accion=" + accion + "&funcion=" + funcion;
 
-        HttpURLConnection urlConnection = null;
+        HttpURLConnection urlConnection;
         try {
             // Se establece la conexión
             URL destino = new URL(direccion);
@@ -46,8 +45,6 @@ public class TrabajoInicioSesionYRegistro extends Worker {
             urlConnection.setConnectTimeout(5000);
             urlConnection.setReadTimeout(5000);
 
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -74,30 +71,27 @@ public class TrabajoInicioSesionYRegistro extends Worker {
             throw new RuntimeException(e);
         }
 
-        String result = null;
+        StringBuilder result = null;
         if (statusCode == 200) {
+            Preferencias.getPreferencias(getApplicationContext()).setSessionId(usuario);
             // Si la respuesta es correcta, se procede a recoger el resultado en una variable
-            BufferedInputStream inputStream = null;
+            BufferedInputStream inputStream;
             try {
                 inputStream = new BufferedInputStream(urlConnection.getInputStream());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            BufferedReader bufferedReader = null;
-            try {
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+            BufferedReader bufferedReader;
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String line;
-            result = "";
+            result = new StringBuilder();
             while (true) {
                 try {
-                    if (!((line = bufferedReader.readLine()) != null)) break;
+                    if ((line = bufferedReader.readLine()) == null) break;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                result += line;
+                result.append(line);
             }
             try {
                 inputStream.close();
@@ -105,8 +99,9 @@ public class TrabajoInicioSesionYRegistro extends Worker {
                 throw new RuntimeException(e);
             }
         }
+        assert result != null;
         Data resultado = new Data.Builder()
-                .putString("resultado", result)
+                .putString("resultado", result.toString())
                 .build();
 
         return Result.success(resultado);
